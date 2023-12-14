@@ -142,30 +142,7 @@ password required pam_permit.so' >/etc/pam.d/common-password && chmod +x /etc/pa
   clear && clear
   apt update
   apt upgrade -y
-  wget /root/LATAM https://raw.githubusercontent.com/NetVPS/LATAM_Oficial/main/Instalador/LATAM -O /usr/bin/LATAM &>/dev/null
-  chmod +x /usr/bin/LATAM
 }
-
-post_reboot() {
-  /bin/cp /etc/skel/.bashrc ~/
-  echo 'LATAM -c' >>.bashrc
-}
-
-time_reboot() {
-  clear && clear
-  msgi -bar
-  echo -e "\e[1;93m     CONTINUARA INSTALACION DESPUES DEL REBOOT"
-  echo -e "\e[1;93m         O EJECUTE EL COMANDO: \e[1;92mLATAM -c "
-  msgi -bar
-  REBOOT_TIMEOUT="$1"
-  while [ $REBOOT_TIMEOUT -gt 0 ]; do
-    print_center -ne "-$REBOOT_TIMEOUT-\r"
-    sleep 1
-    : $((REBOOT_TIMEOUT--))
-  done
-  reboot
-}
-
 dependencias() {
   dpkg --configure -a >/dev/null 2>&1
   apt -f install -y >/dev/null 2>&1
@@ -178,8 +155,6 @@ dependencias() {
 }
 
 install_paquetes() {
-  wget /root/LATAM https://raw.githubusercontent.com/NetVPS/LATAM_Oficial/main/Instalador/LATAM -O /usr/bin/LATAM &>/dev/null
-  chmod +x /usr/bin/LATAM
   clear && clear
   #------- BARRA DE ESPERA
   msgi -bar2
@@ -424,8 +399,7 @@ ofus () {
   }
   incertar_key
 }
-while :; do
+
   case $1 in
   -s | --start) install_inicial && install_paquetes && Install_key ;;
   esac
-done
